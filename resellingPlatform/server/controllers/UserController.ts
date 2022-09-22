@@ -3,6 +3,7 @@ import { IRequest, IProduct, ICustomHeaders } from '../interfaces/RequestInterfa
 import { validationResult } from 'express-validator';
 import { UserService } from '../services/UserService';
 import { ApiError } from '../exceptions/ErrorHandler';
+import UserModel from '../models/UserModel';
 
 class UserController {
     async registration(req: Request, res: Response, next: NextFunction): Promise<Response | undefined> {
@@ -74,6 +75,19 @@ class UserController {
             const user = await UserService.addToFavorites(productId, userId);
 
             return res.status(200).json({user});
+        } catch(err) {
+            next(err);
+        }
+    }
+
+    async removeFromFavorites(req: IRequest<IProduct, ICustomHeaders>, res: Response, next: NextFunction): Promise<Response | undefined> {
+        try {
+            const { productId } = req.params;
+            const { userId } = req.headers;
+
+            const removeFavorite = await UserService.removeFavorites(productId, userId);
+
+            return res.status(200).json({removeFavorite});
         } catch(err) {
             next(err);
         }

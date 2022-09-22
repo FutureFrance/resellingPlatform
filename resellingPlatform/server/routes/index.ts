@@ -16,5 +16,6 @@ router.post("/createProduct", checkAuth, productValidation.create, productContro
 router.delete("/deleteProduct/:productId", checkAuth, productController.deleteProduct);
 router.patch("/modifyProduct/:productId", checkAuth, productValidation.modify, productController.modifyProduct);
 router.post("/addToFavorites", checkAuth, userValidation.addToFavorites, userController.addToFavorites);
+router.delete("/removeFavorites/:productId", checkAuth, userController.removeFromFavorites);
 
 export default router;

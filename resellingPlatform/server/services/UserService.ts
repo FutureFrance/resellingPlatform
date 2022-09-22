@@ -119,8 +119,17 @@ export class UserService {
             }
 
             let favorites: Array<String> = owner.favorites;
-            //// remove from array add the array to owner.favorites and do owner.save() also verify somehow
-            //// if the productId is in array before removing it.
+
+            if (!favorites.includes(productId)) {
+                throw ApiError.badRequest(400, "Item is not in your favorites list");
+            }
+
+            const index = favorites.indexOf(productId);
+            favorites.splice(index, 1); 
+
+            owner.favorites = favorites;
+            await owner.save();
+
             return owner;
         } catch(err) {
             throw ApiError.badRequest(400, `${err}`);
